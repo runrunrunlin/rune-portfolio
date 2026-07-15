@@ -246,9 +246,9 @@ function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
   const cardRef=useRef<HTMLDivElement>(null)
 
   return (
-    <div ref={slot} style={{height:'52vh'}}>
+    <div ref={slot} style={{height:'40vh'}}>
       <motion.div ref={(el)=>{(r as any).current=el;(cardRef as any).current=el}}
-        style={{scale,top:`${60+i*14}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
+        style={{scale,top:`${48+i*10}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
         initial={{opacity:0}} animate={iv?{opacity:1}:{}} transition={{duration:.4}}
         className="sticky will-change-transform rounded-3xl overflow-hidden border border-yellow-200/60"
         onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setMp({x:e.clientX-rc.left,y:e.clientY-rc.top})}}>
@@ -282,7 +282,7 @@ function Projects() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
   return (
     <section id="projects" className="py-20 px-8 md:px-16 relative overflow-hidden"
-      style={{background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 60%,#fef3c7 100%)'}}>
+      style={{background:'#faf9f6'}}>
       <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl pointer-events-none"/>
       <div className="max-w-4xl mx-auto relative z-10">
@@ -329,14 +329,14 @@ function PhotoCard({p,i}:{p:typeof PHOTO_WORKS[0],i:number}) {
     <motion.div ref={r}
       initial={{opacity:0,y:14}} animate={iv?{opacity:1,y:0}:{}}
       transition={{duration:.5,delay:(i%5)*.05}}
-      className={p.tall?'row-span-2':'row-span-1'}
-      style={{perspective:'900px',minHeight:p.tall?'320px':'160px'}}>
+      className="break-inside-avoid mb-3"
+      style={{perspective:'900px'}}>
       <div ref={cardRef}
         onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setRot({x:((e.clientY-rc.top)/rc.height-.5)*-12,y:((e.clientX-rc.left)/rc.width-.5)*12})}}
         onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{setHov(false);setRot({x:0,y:0})}}
-        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(1.03)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d',height:'100%'}}
-        className="rounded-2xl overflow-hidden shadow-md cursor-pointer relative h-full">
-        <img src={p.src} alt={p.cap} className="w-full h-full object-cover" loading="lazy"/>
+        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(1.03)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d'}}
+        className="rounded-2xl overflow-hidden shadow-md cursor-pointer relative">
+        <img src={p.src} alt={p.cap} className="w-full h-full object-contain" loading="lazy" style={{background:'#f8f8f4'}}/>
         <div className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,0.2) 0%,transparent 65%)`}}/>
         <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3 transition-opacity duration-200 ${hov?'opacity-100':'opacity-0'}`}>
@@ -351,7 +351,7 @@ function Gallery() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
   return (
     <section id="gallery" className="py-24 px-6 md:px-10 relative overflow-hidden"
-      style={{background:'linear-gradient(160deg,#faf9f6 0%,#f0f9ff 35%,#ecfdf5 70%,#faf9f6 100%)'}}>
+      style={{background:'#faf9f6'}}>
       <div className="absolute top-16 left-8 w-72 h-72 bg-blue-100/50 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute bottom-16 right-8 w-80 h-80 bg-green-100/40 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-100/30 rounded-full blur-3xl pointer-events-none"/>
@@ -365,7 +365,7 @@ function Gallery() {
             Chasing good light with my phone, finishing watercolors on weekends. No fancy gear — just noticing things. Hover for a little magic ✨
           </p>
         </motion.div>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 auto-rows-[160px]">
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
           {PHOTO_WORKS.map((p,i)=><PhotoCard key={i} p={p} i={i}/>)}
         </div>
       </div>
