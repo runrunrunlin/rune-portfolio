@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 
-// ── Cursor ─────────────────────────────────────────────
 function Cursor() {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
@@ -15,9 +14,9 @@ function Cursor() {
     let raf=0
     const anim=()=>{
       raf=requestAnimationFrame(anim); ctx.clearRect(0,0,W,H)
-      if(++tick%2===0) pts.push({x:mx,y:my,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2-.5,r:3+Math.random()*4,life:1,decay:.028+Math.random()*.016,c:COLS[Math.floor(Math.random()*COLS.length)]})
+      if(++tick%2===0) pts.push({x:mx,y:my,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2-.5,r:2+Math.random()*3,life:1,decay:.03+Math.random()*.018,c:COLS[Math.floor(Math.random()*COLS.length)]})
       for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.life-=p.decay;if(p.life<=0){pts.splice(i,1);continue}ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fillStyle=p.c+(p.life*.8)+')';ctx.fill()}
-      ctx.beginPath();ctx.arc(mx,my,5,0,Math.PI*2);ctx.fillStyle='#EAB308';ctx.fill()
+      ctx.beginPath();ctx.arc(mx,my,4,0,Math.PI*2);ctx.fillStyle='#EAB308';ctx.fill()
     }
     anim()
     return ()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);document.removeEventListener('mousemove',onMove)}
@@ -25,15 +24,14 @@ function Cursor() {
   return <canvas ref={ref} className="fixed inset-0 z-[9999] pointer-events-none"/>
 }
 
-// ── Navbar ─────────────────────────────────────────────
 function Navbar() {
   const [sc,setSc]=useState(false)
   useEffect(()=>{const f=()=>setSc(window.scrollY>50);window.addEventListener('scroll',f,{passive:true});return()=>window.removeEventListener('scroll',f)},[])
   return (
     <motion.nav initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:.6}}
-      className={`fixed top-0 left-0 right-0 z-[100] flex justify-between items-center px-8 md:px-16 transition-all duration-300 ${sc?'py-3 bg-white/90 backdrop-blur-sm shadow-sm':'py-6'}`}>
-      <span className="font-black text-2xl tracking-tight">Rune<span className="text-yellow-400">.</span></span>
-      <div className="hidden md:flex gap-10 text-sm font-semibold text-gray-600">
+      className={`fixed top-0 left-0 right-0 z-[100] flex justify-between items-center px-6 md:px-12 transition-all duration-300 ${sc?'py-2.5 bg-white/90 backdrop-blur-sm shadow-sm':'py-5'}`}>
+      <span className="font-black text-xl tracking-tight">Rune<span className="text-yellow-400">.</span></span>
+      <div className="hidden md:flex gap-8 text-xs font-semibold text-gray-600 uppercase tracking-wider">
         {['About','Experience','Projects','Gallery','Contact'].map(l=>(
           <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-yellow-500 transition-colors">{l}</a>
         ))}
@@ -42,39 +40,38 @@ function Navbar() {
   )
 }
 
-// ── Hero ───────────────────────────────────────────────
 function Hero() {
   return (
     <section className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-gray-50 relative overflow-hidden flex items-center">
-      <div className="absolute top-10 right-10 w-96 h-96 bg-yellow-200/40 rounded-full blur-3xl"/>
-      <div className="absolute bottom-10 left-0 w-80 h-80 bg-yellow-100/60 rounded-full blur-3xl"/>
-      <div className="absolute inset-0 opacity-[0.025]" style={{backgroundImage:'radial-gradient(circle,#000 1px,transparent 1px)',backgroundSize:'28px 28px'}}/>
-      <div className="relative z-10 w-full px-8 md:px-16 pt-28 pb-16 grid md:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
+      <div className="absolute top-10 right-10 w-72 h-72 bg-yellow-200/40 rounded-full blur-3xl"/>
+      <div className="absolute bottom-10 left-0 w-64 h-64 bg-yellow-100/60 rounded-full blur-3xl"/>
+      <div className="absolute inset-0 opacity-[0.025]" style={{backgroundImage:'radial-gradient(circle,#000 1px,transparent 1px)',backgroundSize:'24px 24px'}}/>
+      <div className="relative z-10 w-full px-6 md:px-12 pt-24 pb-12 grid md:grid-cols-2 gap-6 items-center max-w-6xl mx-auto">
         <div>
           <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.1}}
-            className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 text-sm font-semibold px-5 py-2.5 rounded-full mb-8">
-            <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"/>
+            className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse"/>
             CS grad · Edmonton AB · open to work
           </motion.div>
           <motion.h1 initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:.2}}
-            className="text-6xl md:text-8xl font-black leading-[.9] tracking-tight mb-8">
+            className="text-4xl md:text-5xl font-black leading-[.95] tracking-tight mb-5">
             Hi, I'm<br/><span className="text-yellow-400">Rune</span><br/>Lin.
           </motion.h1>
           <motion.p initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.35}}
-            className="text-gray-500 text-xl leading-relaxed max-w-md mb-10">
+            className="text-gray-500 text-sm leading-relaxed max-w-xs mb-7">
             Full-stack developer who finds equal joy in a clean pull request, a well-framed photo, and a golden retriever doing literally anything.
           </motion.p>
-          <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.45}} className="flex gap-4 flex-wrap">
-            <a href="#contact" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold text-lg px-10 py-4 rounded-2xl transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-yellow-200">Get in touch →</a>
-            <a href="#experience" className="border-2 border-gray-200 hover:border-yellow-400 text-gray-700 font-bold text-lg px-10 py-4 rounded-2xl transition-all hover:-translate-y-0.5">View experience</a>
+          <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.45}} className="flex gap-3 flex-wrap">
+            <a href="#contact" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-200">Get in touch →</a>
+            <a href="#experience" className="border-2 border-gray-200 hover:border-yellow-400 text-gray-700 font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5">View experience</a>
           </motion.div>
         </div>
         <motion.div initial={{opacity:0,scale:.9,rotate:-3}} animate={{opacity:1,scale:1,rotate:-2}} transition={{delay:.3,type:'spring',stiffness:100}}
           className="relative flex justify-center md:justify-end">
           <div className="relative">
-            <div className="absolute inset-0 bg-yellow-300 rounded-[2.5rem] translate-x-4 translate-y-4"/>
-            <div className="relative bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white" style={{width:'clamp(300px,40vw,460px)'}}>
-              <img src="/images/FullSizeRender.jpg" alt="Rune Lin" className="w-full object-cover" style={{height:'clamp(380px,52vw,580px)'}}/>
+            <div className="absolute inset-0 bg-yellow-300 rounded-[2rem] translate-x-3 translate-y-3"/>
+            <div className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white" style={{width:'clamp(180px,22vw,280px)'}}>
+              <img src="/images/FullSizeRender.jpg" alt="Rune Lin" className="w-full object-cover" style={{height:'clamp(220px,30vw,360px)'}}/>
             </div>
           </div>
         </motion.div>
@@ -83,7 +80,7 @@ function Hero() {
   )
 }
 
-// ── Marquee — no duplicates ────────────────────────────
+// ── Marquee ──────────────────────────────────────────────
 const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_7849.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg']
 const ROW2=['/images/IMG_1544.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_6263.jpg','/images/IMG_4528.jpg']
 
@@ -101,45 +98,46 @@ function Marquee() {
   },[])
   const loop1=[...ROW1,...ROW1,...ROW1], loop2=[...ROW2,...ROW2,...ROW2]
   return (
-    <section ref={sec} className="py-16 overflow-hidden bg-white">
-      <div ref={r1} className="flex gap-4 mb-4 will-change-transform">
-        {loop1.map((s,i)=><div key={i} className="flex-shrink-0 rounded-2xl overflow-hidden shadow-sm" style={{width:'clamp(220px,26vw,380px)',height:'clamp(140px,18vw,240px)'}}><img src={s} alt="" className="w-full h-full object-cover" loading="lazy"/></div>)}
+    <section ref={sec} className="py-10 overflow-hidden bg-white">
+      <div ref={r1} className="flex gap-3 mb-3 will-change-transform">
+        {loop1.map((s,i)=><div key={i} className="flex-shrink-0 rounded-xl overflow-hidden shadow-sm" style={{width:'clamp(130px,14vw,200px)',height:'clamp(85px,9vw,130px)'}}><img src={s} alt="" className="w-full h-full object-cover" loading="lazy"/></div>)}
       </div>
-      <div ref={r2} className="flex gap-4 will-change-transform">
-        {loop2.map((s,i)=><div key={i} className="flex-shrink-0 rounded-2xl overflow-hidden shadow-sm" style={{width:'clamp(220px,26vw,380px)',height:'clamp(140px,18vw,240px)'}}><img src={s} alt="" className="w-full h-full object-cover" loading="lazy"/></div>)}
+      <div ref={r2} className="flex gap-3 will-change-transform">
+        {loop2.map((s,i)=><div key={i} className="flex-shrink-0 rounded-xl overflow-hidden shadow-sm" style={{width:'clamp(130px,14vw,200px)',height:'clamp(85px,9vw,130px)'}}><img src={s} alt="" className="w-full h-full object-cover" loading="lazy"/></div>)}
       </div>
     </section>
   )
 }
 
-// ── About — bigger avatar centered ────────────────────
+// ── About ─────────────────────────────────────────────────
 function About() {
   const ref=useRef(null);const inView=useInView(ref,{once:true,margin:'-10%'})
   const tags=['☕ chronically curious','🐕 dog-adjacent','📸 bad camera, good eye','🎨 paints sunsets','🏸 loses gracefully','🧩 puzzle hoarder']
   return (
-    <section id="about" className="py-32 px-8 md:px-16 bg-[#faf9f6]">
-      <div className="max-w-4xl mx-auto text-center">
+    <section id="about" className="py-16 px-6 md:px-12 bg-[#faf9f6]">
+      <div className="max-w-2xl mx-auto text-center">
         <motion.div ref={ref} initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.7}}>
-          <span className="text-yellow-500 font-mono text-sm tracking-widest uppercase">01 · About me</span>
-          <div className="mt-8 mb-10 flex justify-center">
+          <span className="text-yellow-500 font-mono text-xs tracking-widest uppercase">01 · About me</span>
+          <div className="mt-5 mb-6 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-yellow-300 translate-x-3 translate-y-3"/>
-              <div className="relative rounded-full overflow-hidden border-4 border-white shadow-2xl" style={{width:'180px',height:'180px'}}>
+              <div className="absolute inset-0 rounded-full bg-yellow-300 translate-x-2 translate-y-2"/>
+              <div className="relative rounded-full overflow-hidden border-3 border-white shadow-xl" style={{width:'88px',height:'88px'}}>
+                {/* 👇 改这里换头像图片 */}
                 <img src="/images/IMG_8186.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
               </div>
             </div>
           </div>
-          <h2 className="text-5xl md:text-7xl font-black leading-[.95] tracking-tight mb-10">
+          <h2 className="text-3xl md:text-4xl font-black leading-[.95] tracking-tight mb-5">
             Equal parts <span className="text-yellow-400">code</span><br/>& good light.
           </h2>
-          <p className="text-gray-500 text-xl leading-relaxed mb-5 max-w-2xl mx-auto">
+          <p className="text-gray-500 text-sm leading-relaxed mb-3 mx-auto">
             <strong className="text-gray-800">Run Lin</strong> — most call me <strong className="text-gray-800">Rune</strong>. CS grad from the University of Alberta. I find the same satisfaction in a clean pull request, a well-framed photograph, and a half-finished watercolor painting on my desk.
           </p>
-          <p className="text-gray-500 text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+          <p className="text-gray-500 text-sm leading-relaxed mb-7 mx-auto">
             Currently sharing my apartment with the world's most photogenic golden retriever. Not a flex — just true.
           </p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {tags.map(t=><span key={t} className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-base font-semibold px-5 py-2.5 rounded-full">{t}</span>)}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {tags.map(t=><span key={t} className="bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs font-semibold px-4 py-2 rounded-full">{t}</span>)}
           </div>
         </motion.div>
       </div>
@@ -147,7 +145,7 @@ function About() {
   )
 }
 
-// ── Experience — Brittany style: mouse glow + dim others
+// ── Experience — mouse glow + dim on hover ────────────────
 const EXP=[
   {role:'Web Developer Intern',org:'Solution MS Technology',period:'Jun – Oct 2025',
    desc:'Full-stack logistics features with React, TypeScript, Node.js & MySQL. GraphQL + REST APIs. Refactored SQL — 30% faster pages. Jest + CI/CD cut post-release bugs by 20%.',
@@ -171,17 +169,16 @@ function Experience() {
   const [mp,setMp]=useState({x:0,y:0})
   const secRef=useRef<HTMLElement>(null)
   const headRef=useRef(null);const headVis=useInView(headRef,{once:true})
-
   return (
     <section id="experience" ref={secRef}
       onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
-      className="py-32 px-8 md:px-16 bg-gray-950 text-white relative overflow-hidden">
+      className="py-20 px-6 md:px-12 bg-gray-950 text-white relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0"
-        style={{background:`radial-gradient(600px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.07),transparent 40%)`}}/>
-      <div className="relative z-10 max-w-5xl mx-auto">
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.07),transparent 40%)`}}/>
+      <div className="relative z-10 max-w-4xl mx-auto">
         <motion.div ref={headRef} initial={{opacity:0,y:20}} animate={headVis?{opacity:1,y:0}:{}} transition={{duration:.6}}>
-          <span className="text-yellow-400 font-mono text-sm tracking-widest uppercase">02 · Experience</span>
-          <h2 className="text-5xl md:text-7xl font-black mt-4 mb-16 leading-tight">Where I've spent<br/>my <span className="text-yellow-400">time</span>.</h2>
+          <span className="text-yellow-400 font-mono text-xs tracking-widest uppercase">02 · Experience</span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-8 leading-tight">Where I've spent<br/>my <span className="text-yellow-400">time</span>.</h2>
         </motion.div>
         <div className="flex flex-col">
           {EXP.map((e,i)=>{
@@ -189,20 +186,20 @@ function Experience() {
             const isHov=hov===i, isDim=hov!==null&&!isHov
             return (
               <motion.div ref={r} key={i}
-                initial={{opacity:0,y:18}} animate={iv?{opacity:1,y:0}:{}} transition={{duration:.5,delay:i*.07}}
+                initial={{opacity:0,y:16}} animate={iv?{opacity:1,y:0}:{}} transition={{duration:.5,delay:i*.07}}
                 onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)}
-                className="group relative rounded-2xl p-6 md:p-8 cursor-default transition-all duration-200"
+                className="group relative rounded-xl p-5 cursor-default transition-all duration-200"
                 style={{opacity:isDim?.3:1}}>
-                <div className={`absolute inset-0 rounded-2xl border transition-all duration-200 ${isHov?'border-yellow-400/30 bg-white/[0.04]':'border-transparent'}`}/>
-                <div className="relative grid grid-cols-[160px_1fr] gap-6">
-                  <div className="text-sm font-mono mt-1 transition-colors duration-200" style={{color:isHov?'rgba(234,179,8,.8)':'#6B7280'}}>{e.period}</div>
+                <div className={`absolute inset-0 rounded-xl border transition-all duration-200 ${isHov?'border-yellow-400/30 bg-white/[0.04]':'border-transparent'}`}/>
+                <div className="relative grid grid-cols-[130px_1fr] gap-5">
+                  <div className="text-xs font-mono mt-0.5 transition-colors duration-200" style={{color:isHov?'rgba(234,179,8,.8)':'#6B7280'}}>{e.period}</div>
                   <div>
-                    <div className={`font-bold text-lg md:text-xl mb-0.5 transition-colors duration-200 ${isHov?'text-yellow-400':'text-white'}`}>{e.role}</div>
-                    <div className="text-gray-500 text-sm font-mono mb-3">{e.org}</div>
-                    <p className="text-gray-400 text-base leading-relaxed mb-4 max-w-xl">{e.desc}</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className={`font-bold text-base mb-0.5 transition-colors duration-200 ${isHov?'text-yellow-400':'text-white'}`}>{e.role}</div>
+                    <div className="text-gray-500 text-xs font-mono mb-2">{e.org}</div>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-3 max-w-lg">{e.desc}</p>
+                    <div className="flex flex-wrap gap-1.5">
                       {e.tags.map(t=>(
-                        <span key={t} className="text-xs font-mono px-3 py-1.5 rounded-full transition-all duration-200"
+                        <span key={t} className="text-xs font-mono px-2.5 py-1 rounded-full transition-all duration-200"
                           style={{background:isHov?'rgba(234,179,8,0.15)':'rgba(255,255,255,0.06)',color:isHov?'#EAB308':'#9CA3AF',border:isHov?'1px solid rgba(234,179,8,0.35)':'1px solid rgba(255,255,255,0.1)'}}>
                           {t}
                         </span>
@@ -214,9 +211,9 @@ function Experience() {
             )
           })}
         </div>
-        <div className="mt-10 pt-10 border-t border-white/10 flex flex-wrap gap-2">
+        <div className="mt-8 pt-8 border-t border-white/10 flex flex-wrap gap-1.5">
           {['Python','TypeScript','React','Node.js','ASP.NET Core','FastAPI','PostgreSQL','MySQL','Firebase','AWS','Kotlin','C#'].map(s=>(
-            <span key={s} className="border border-white/15 text-gray-400 text-sm font-mono px-4 py-2 rounded-full">{s}</span>
+            <span key={s} className="border border-white/15 text-gray-400 text-xs font-mono px-3 py-1.5 rounded-full">{s}</span>
           ))}
         </div>
       </div>
@@ -224,7 +221,7 @@ function Experience() {
   )
 }
 
-// ── Projects — watercolor warm bg, tight sticky, mouse glow
+// ── Projects — sticky scroll stack ────────────────────────
 const PROJS=[
   {n:'01',cat:'Full-Stack · ASP.NET Core',name:'Work Order Management System',href:'https://github.com/runrunrunlin/WorkOrderSystem',
    desc:'Maintenance management web app with a four-stage work order lifecycle. Separate Admin and Technician access levels, bcrypt auth, automatic equipment status sync.',
@@ -240,37 +237,34 @@ const PROJS=[
 function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
   const slot=useRef(null)
   const {scrollYProgress}=useScroll({target:slot,offset:['start end','end start']})
-  const scale=useTransform(scrollYProgress,[.15,.5,.85],[.97,1,1-(2-i)*.015])
+  const scale=useTransform(scrollYProgress,[.1,.5,.9],[.96,1,1-(2-i)*.016])
   const r=useRef(null);const iv=useInView(r,{once:true})
   const [mp,setMp]=useState({x:200,y:100})
   const cardRef=useRef<HTMLDivElement>(null)
-
   return (
-    <div ref={slot} style={{height:'40vh'}}>
+    <div ref={slot} style={{height:'45vh',minHeight:'240px'}}>
       <motion.div ref={(el)=>{(r as any).current=el;(cardRef as any).current=el}}
-        style={{scale,top:`${48+i*10}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
+        style={{scale,top:`${44+i*10}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
         initial={{opacity:0}} animate={iv?{opacity:1}:{}} transition={{duration:.4}}
-        className="sticky will-change-transform rounded-3xl overflow-hidden border border-yellow-200/60"
+        className="sticky will-change-transform rounded-2xl overflow-hidden border border-yellow-200/60"
         onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setMp({x:e.clientX-rc.left,y:e.clientY-rc.top})}}>
         <div className="pointer-events-none absolute inset-0 z-0"
-          style={{background:`radial-gradient(300px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.13),transparent 65%)`}}/>
-        <div className="relative z-10 p-7 md:p-9 h-full flex flex-col justify-between">
-          <div>
-            <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
-              <div className="font-black leading-none opacity-[0.08]" style={{fontSize:'clamp(2.5rem,6vw,5rem)',color:p.accent}}>{p.n}</div>
-              <div className="flex-1 px-5 pt-0.5">
-                <div className="text-xs font-mono tracking-widest uppercase mb-1.5" style={{color:p.accent}}>{p.cat}</div>
-                <div className="font-black text-xl md:text-2xl leading-snug text-gray-900">{p.name}</div>
-              </div>
-              {p.href
-                ?<a href={p.href} target="_blank" rel="noreferrer" className="font-mono text-sm px-5 py-2 rounded-full border-2 transition-all hover:-translate-y-0.5 mt-0.5" style={{borderColor:p.accent,color:p.accent}}>GitHub ↗</a>
-                :<span className="font-mono text-sm px-5 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">Academic</span>
-              }
+          style={{background:`radial-gradient(250px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.13),transparent 65%)`}}/>
+        <div className="relative z-10 p-6 md:p-8">
+          <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
+            <div className="font-black leading-none opacity-[0.08]" style={{fontSize:'clamp(2rem,5vw,4rem)',color:p.accent}}>{p.n}</div>
+            <div className="flex-1 px-4 pt-0.5">
+              <div className="text-xs font-mono tracking-widest uppercase mb-1" style={{color:p.accent}}>{p.cat}</div>
+              <div className="font-black text-lg md:text-xl leading-snug text-gray-900">{p.name}</div>
             </div>
-            <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl mb-5">{p.desc}</p>
+            {p.href
+              ?<a href={p.href} target="_blank" rel="noreferrer" className="font-mono text-xs px-4 py-2 rounded-full border-2 transition-all hover:-translate-y-0.5 mt-0.5" style={{borderColor:p.accent,color:p.accent}}>GitHub ↗</a>
+              :<span className="font-mono text-xs px-4 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">Academic</span>
+            }
           </div>
-          <div className="flex flex-wrap gap-2">
-            {p.stack.map(s=><span key={s} className="text-sm font-mono px-4 py-1.5 rounded-full border-2 font-semibold" style={{borderColor:p.accent+'50',color:p.accent,background:p.accent+'12'}}>{s}</span>)}
+          <p className="text-gray-600 text-sm leading-relaxed max-w-xl mb-4">{p.desc}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {p.stack.map(s=><span key={s} className="text-xs font-mono px-3 py-1.5 rounded-full border-2 font-semibold" style={{borderColor:p.accent+'50',color:p.accent,background:p.accent+'12'}}>{s}</span>)}
           </div>
         </div>
       </motion.div>
@@ -281,14 +275,13 @@ function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
 function Projects() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
   return (
-    <section id="projects" className="py-20 px-8 md:px-16 relative overflow-hidden"
-      style={{background:'#faf9f6'}}>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-200/30 rounded-full blur-3xl pointer-events-none"/>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-orange-100/40 rounded-full blur-3xl pointer-events-none"/>
-      <div className="max-w-4xl mx-auto relative z-10">
+    <section id="projects" className="py-14 px-6 md:px-12 relative overflow-hidden" style={{background:'#faf9f6'}}>
+      <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-200/25 rounded-full blur-3xl pointer-events-none"/>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-100/30 rounded-full blur-3xl pointer-events-none"/>
+      <div className="max-w-3xl mx-auto relative z-10">
         <motion.div ref={ref} initial={{opacity:0,y:20}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.6}}>
-          <span className="text-yellow-600 font-mono text-sm tracking-widest uppercase">03 · Projects</span>
-          <h2 className="text-5xl md:text-7xl font-black mt-4 mb-10 leading-tight text-gray-900">
+          <span className="text-yellow-600 font-mono text-xs tracking-widest uppercase">03 · Projects</span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-8 leading-tight text-gray-900">
             "Wait, I could<br/><span className="text-yellow-400">build</span> this."
           </h2>
         </motion.div>
@@ -300,7 +293,7 @@ function Projects() {
   )
 }
 
-// ── Gallery — 3D cards, 5-col wide, watercolor bg ──────
+// ── Gallery — masonry grid, object-cover, wider ───────────
 const PHOTO_WORKS=[
   {src:'/images/IMG_2776.jpg',cap:'Stilt house, Thailand',tall:true},
   {src:'/images/IMG_0492.jpg',cap:'Sunset through trees',tall:false},
@@ -324,23 +317,22 @@ function PhotoCard({p,i}:{p:typeof PHOTO_WORKS[0],i:number}) {
   const [hov,setHov]=useState(false)
   const cardRef=useRef<HTMLDivElement>(null)
   const r=useRef(null);const iv=useInView(r,{once:true,margin:'-5%'})
-
   return (
     <motion.div ref={r}
-      initial={{opacity:0,y:14}} animate={iv?{opacity:1,y:0}:{}}
+      initial={{opacity:0,y:12}} animate={iv?{opacity:1,y:0}:{}}
       transition={{duration:.5,delay:(i%5)*.05}}
-      className="break-inside-avoid mb-3"
+      className={p.tall?'row-span-2':'row-span-1'}
       style={{perspective:'900px'}}>
       <div ref={cardRef}
-        onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setRot({x:((e.clientY-rc.top)/rc.height-.5)*-12,y:((e.clientX-rc.left)/rc.width-.5)*12})}}
+        onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setRot({x:((e.clientY-rc.top)/rc.height-.5)*-10,y:((e.clientX-rc.left)/rc.width-.5)*10})}}
         onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{setHov(false);setRot({x:0,y:0})}}
-        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(1.03)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d'}}
-        className="rounded-2xl overflow-hidden shadow-md cursor-pointer relative">
-        <img src={p.src} alt={p.cap} className="w-full h-full object-contain" loading="lazy" style={{background:'#f8f8f4'}}/>
+        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(1.03)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d',height:'100%'}}
+        className="rounded-xl overflow-hidden shadow-sm cursor-pointer relative h-full">
+        <img src={p.src} alt={p.cap} className="w-full h-full object-cover" loading="lazy"/>
         <div className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,0.2) 0%,transparent 65%)`}}/>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3 transition-opacity duration-200 ${hov?'opacity-100':'opacity-0'}`}>
-          <p className="text-white font-mono text-xs tracking-wider">{p.cap}</p>
+          style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,0.18) 0%,transparent 65%)`}}/>
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent flex items-end p-3 transition-opacity duration-200 ${hov?'opacity-100':'opacity-0'}`}>
+          <p className="text-white font-mono text-xs">{p.cap}</p>
         </div>
       </div>
     </motion.div>
@@ -350,22 +342,21 @@ function PhotoCard({p,i}:{p:typeof PHOTO_WORKS[0],i:number}) {
 function Gallery() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
   return (
-    <section id="gallery" className="py-24 px-6 md:px-10 relative overflow-hidden"
-      style={{background:'#faf9f6'}}>
-      <div className="absolute top-16 left-8 w-72 h-72 bg-blue-100/50 rounded-full blur-3xl pointer-events-none"/>
-      <div className="absolute bottom-16 right-8 w-80 h-80 bg-green-100/40 rounded-full blur-3xl pointer-events-none"/>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-100/30 rounded-full blur-3xl pointer-events-none"/>
+    <section id="gallery" className="py-16 px-6 md:px-10 relative overflow-hidden" style={{background:'#faf9f6'}}>
+      <div className="absolute top-12 left-6 w-56 h-56 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"/>
+      <div className="absolute bottom-12 right-6 w-64 h-64 bg-green-100/35 rounded-full blur-3xl pointer-events-none"/>
       <div className="max-w-screen-xl mx-auto relative z-10">
-        <motion.div ref={ref} initial={{opacity:0,y:20}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.6}} className="mb-10">
-          <span className="text-yellow-500 font-mono text-sm tracking-widest uppercase">04 · Gallery</span>
-          <h2 className="text-5xl md:text-7xl font-black mt-4 mb-5 leading-tight">
+        <motion.div ref={ref} initial={{opacity:0,y:20}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.6}} className="mb-8">
+          <span className="text-yellow-500 font-mono text-xs tracking-widest uppercase">04 · Gallery</span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-3 leading-tight">
             I also love <span className="text-yellow-400">photography</span><br/>& painting.
           </h2>
-          <p className="text-gray-500 text-xl leading-relaxed max-w-2xl">
+          <p className="text-gray-500 text-sm leading-relaxed max-w-xl">
             Chasing good light with my phone, finishing watercolors on weekends. No fancy gear — just noticing things. Hover for a little magic ✨
           </p>
         </motion.div>
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+        {/* grid with fixed row height so images are cropped uniformly */}
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-2.5 auto-rows-[140px]">
           {PHOTO_WORKS.map((p,i)=><PhotoCard key={i} p={p} i={i}/>)}
         </div>
       </div>
@@ -373,25 +364,51 @@ function Gallery() {
   )
 }
 
-// ── Contact ─────────────────────────────────────────────
+// ── Contact — mouse glow + button backlight ───────────────
 function Contact() {
   const ref=useRef(null);const inView=useInView(ref,{once:true,margin:'-10%'})
+  const [mp,setMp]=useState({x:0,y:0})
+  const secRef=useRef<HTMLElement>(null)
   return (
-    <section id="contact" className="py-40 px-8 md:px-16 bg-gray-950 relative overflow-hidden text-center">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-yellow-400/5 rounded-full blur-3xl"/>
-      <div className="relative max-w-4xl mx-auto">
+    <section id="contact" ref={secRef}
+      onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
+      className="py-24 px-6 md:px-12 bg-gray-950 relative overflow-hidden text-center">
+      {/* mouse glow — same as experience */}
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.07),transparent 40%)`}}/>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-yellow-400/5 rounded-full blur-3xl pointer-events-none"/>
+      <div className="relative z-10 max-w-3xl mx-auto">
         <motion.div ref={ref} initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.7}}>
-          <span className="text-yellow-400 font-mono text-sm tracking-widest uppercase">05 · Contact</span>
-          <h2 className="text-6xl md:text-8xl font-black mt-4 mb-6 text-white leading-[.95] tracking-tight">
+          <span className="text-yellow-400 font-mono text-xs tracking-widest uppercase">05 · Contact</span>
+          <h2 className="text-4xl md:text-5xl font-black mt-3 mb-4 text-white leading-[.95] tracking-tight">
             Let's build<br/>something <span className="text-yellow-400">good</span>.
           </h2>
-          <p className="text-gray-400 text-xl mb-14">Open to full-stack, ML, or anything in between. Let's chat.</p>
-          <div className="flex gap-5 flex-wrap justify-center mb-20">
-            <a href="mailto:runlin982@gmail.com" className="bg-yellow-400 hover:bg-yellow-500 text-black font-black text-xl px-10 py-5 rounded-2xl transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-yellow-400/30">runlin982@gmail.com</a>
-            <a href="https://linkedin.com/in/run-lin" target="_blank" rel="noreferrer" className="border-2 border-white/20 text-white font-bold text-xl px-10 py-5 rounded-2xl hover:bg-white/8 transition-all hover:-translate-y-1">LinkedIn ↗</a>
-            <a href="https://github.com/runrunrunlin" target="_blank" rel="noreferrer" className="border-2 border-white/20 text-white font-bold text-xl px-10 py-5 rounded-2xl hover:bg-white/8 transition-all hover:-translate-y-1">GitHub ↗</a>
+          <p className="text-gray-400 text-sm mb-8">Open to full-stack, ML, or anything in between. Let's chat.</p>
+          <div className="flex gap-3 flex-wrap justify-center mb-10">
+            {/* primary button — yellow backlight on hover */}
+            <a href="mailto:runlin982@gmail.com"
+              className="group relative bg-yellow-400 text-black font-black text-sm px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5"
+              style={{}}>
+              <span className="relative z-10">runlin982@gmail.com</span>
+              <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{boxShadow:'0 0 24px 6px rgba(234,179,8,0.55)',background:'rgba(250,204,21,0.15)'}}/>
+            </a>
+            {/* LinkedIn */}
+            <a href="https://linkedin.com/in/run-lin" target="_blank" rel="noreferrer"
+              className="group relative border-2 border-white/20 text-white font-bold text-sm px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+              <span className="relative z-10">LinkedIn ↗</span>
+              <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{boxShadow:'0 0 20px 4px rgba(255,255,255,0.12)',background:'rgba(255,255,255,0.06)'}}/>
+            </a>
+            {/* GitHub */}
+            <a href="https://github.com/runrunrunlin" target="_blank" rel="noreferrer"
+              className="group relative border-2 border-white/20 text-white font-bold text-sm px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-0.5">
+              <span className="relative z-10">GitHub ↗</span>
+              <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{boxShadow:'0 0 20px 4px rgba(255,255,255,0.12)',background:'rgba(255,255,255,0.06)'}}/>
+            </a>
           </div>
-          <p className="text-gray-600 text-sm font-mono">© 2026 Run "Rune" Lin · built with curiosity & one supervising dog</p>
+          <p className="text-gray-600 text-xs font-mono">© 2026 Run "Rune" Lin · built with curiosity & one supervising dog</p>
         </motion.div>
       </div>
     </section>
