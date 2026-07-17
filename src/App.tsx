@@ -82,7 +82,7 @@ function Hero() {
 
 // ── Marquee ──────────────────────────────────────────────
 const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_1544.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg']
-const ROW2=['/images/IMG_7849.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/100_1205.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_7392.jpg','/images/IMG_7237.jpg','/images/IMG_7971.jpg']
+const ROW2=['/images/IMG_7849.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_7392.jpg','/images/100_1205.jpg','/images/IMG_7237.jpg']
 
 function Marquee() {
   const r1=useRef<HTMLDivElement>(null),r2=useRef<HTMLDivElement>(null),sec=useRef<HTMLElement>(null)
