@@ -123,7 +123,7 @@ function About() {
               <div className="absolute inset-0 rounded-full bg-yellow-300 translate-x-2 translate-y-2"/>
               <div className="relative rounded-full overflow-hidden border-3 border-white shadow-xl" style={{width:'88px',height:'88px'}}>
                 {/* 👇 改这里换头像图片 */}
-                <img src="/images/IMG_7971.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
+                <img src="/images/IMG_9964.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
               </div>
             </div>
           </div>
