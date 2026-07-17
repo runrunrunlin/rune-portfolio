@@ -46,8 +46,8 @@ function Hero() {
       <div className="absolute top-10 right-10 w-72 h-72 bg-yellow-200/40 rounded-full blur-3xl"/>
       <div className="absolute bottom-10 left-0 w-64 h-64 bg-yellow-100/60 rounded-full blur-3xl"/>
       <div className="absolute inset-0 opacity-[0.025]" style={{backgroundImage:'radial-gradient(circle,#000 1px,transparent 1px)',backgroundSize:'24px 24px'}}/>
-      <div className="relative z-10 w-full px-6 md:px-12 pt-24 pb-12 grid md:grid-cols-2 gap-6 items-center max-w-6xl mx-auto">
-        <div>
+      <div className="relative z-10 w-full px-6 md:px-12 pt-24 pb-12 flex flex-col md:flex-row items-center justify-center gap-10 md:gap-14 max-w-4xl mx-auto text-center md:text-left">
+        <div className="max-w-sm shrink-0">
           <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.1}}
             className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-700 text-xs font-semibold px-4 py-2 rounded-full mb-6">
             <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse"/>
@@ -58,16 +58,16 @@ function Hero() {
             Hi, I'm<br/><span className="text-yellow-400">Rune</span><br/>Lin.
           </motion.h1>
           <motion.p initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.35}}
-            className="text-gray-500 text-sm leading-relaxed max-w-xs mb-7">
+            className="text-gray-500 text-sm leading-relaxed mb-7 mx-auto md:mx-0">
             Full-stack developer who finds equal joy in a clean pull request, a well-framed photo, and a golden retriever doing literally anything.
           </motion.p>
-          <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.45}} className="flex gap-3 flex-wrap">
+          <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:.45}} className="flex gap-3 flex-wrap justify-center md:justify-start">
             <a href="#contact" className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-yellow-200">Get in touch →</a>
             <a href="#experience" className="border-2 border-gray-200 hover:border-yellow-400 text-gray-700 font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5">View experience</a>
           </motion.div>
         </div>
         <motion.div initial={{opacity:0,scale:.9,rotate:-3}} animate={{opacity:1,scale:1,rotate:-2}} transition={{delay:.3,type:'spring',stiffness:100}}
-          className="relative flex justify-center md:justify-end">
+          className="relative flex justify-center shrink-0">
           <div className="relative">
             <div className="absolute inset-0 bg-yellow-300 rounded-[2rem] translate-x-3 translate-y-3"/>
             <div className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white" style={{width:'clamp(180px,22vw,280px)'}}>
@@ -223,29 +223,37 @@ function Experience() {
 
 // ── Projects — sticky scroll stack ────────────────────────
 const PROJS=[
-  {n:'01',cat:'Full-Stack · ASP.NET Core',name:'Work Order Management System',href:'https://github.com/runrunrunlin/WorkOrderSystem',
+  {n:'01',cat:'Full-Stack · ASP.NET Core',name:'Work Order Management System',href:'https://github.com/runrunrunlin/WorkOrderSystem',badge:'',
    desc:'Maintenance management web app with a four-stage work order lifecycle. Separate Admin and Technician access levels, bcrypt auth, automatic equipment status sync.',
    stack:['ASP.NET Core 8','Entity Framework','SQLite','JWT'],accent:'#D97706'},
-  {n:'02',cat:'Android · Kotlin · Firebase',name:'PEVIS — Pet Health Management',href:'https://github.com/runrunrunlin/PEVIS',
+  {n:'02',cat:'Android · Kotlin · Firebase',name:'PEVIS — Pet Health Management',href:'https://github.com/runrunrunlin/PEVIS',badge:'',
    desc:'Android app for pet profiles and health records — vaccinations, check-ups, medications — with real-time reminders synced across two Firebase services. Built for my own dog.',
    stack:['Kotlin','Android Studio','Firebase'],accent:'#EA580C'},
-  {n:'03',cat:'Python · Academic · CMPUT 291',name:'Social Media Platform',href:'',
+  {n:'03',cat:'Python · Academic · CMPUT 291',name:'Social Media Platform',href:'',badge:'Academic',
    desc:'Full-featured GUI desktop app — login, follow/unfollow, post, repost, edit, feed browsing. Most classmates shipped terminal-only solutions.',
    stack:['Python','Tkinter','SQLite'],accent:'#0284C7'},
+  {n:'04',cat:'Game Dev · Unity · C#',name:'DNF Demo — 2D Fighting Game',href:'https://github.com/runrunrunlin/DNF_Demo',badge:'',
+   desc:'2D side-scrolling fighting game demo inspired by Dungeon Fighter Online. Animator-driven combo system with buffered input windows, precise hitbox detection, hit-stop frame freeze on impact, and independently tunable knockback per attack. Enemy AI runs a 5-state chase-and-attack machine.',
+   stack:['Unity 6','C#','Animator FSM','Coroutines'],accent:'#7C3AED'},
+  {n:'05',cat:'Python · FastAPI · SQLAlchemy',name:'Intelligent Recipe Finder',href:'',badge:'Personal project',
+   desc:"Ingredient-based recipe search engine — type what's in your fridge, get matching recipes ranked by relevance. FastAPI REST API over a many-to-many recipe/ingredient schema with fuzzy matching across thousands of recipes, each paired with its own photo.",
+   stack:['FastAPI','SQLAlchemy','SQLite','Python'],accent:'#059669'},
 ]
 
 function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
   const slot=useRef(null)
   const {scrollYProgress}=useScroll({target:slot,offset:['start end','end start']})
   const scale=useTransform(scrollYProgress,[.1,.5,.9],[.96,1,1-(2-i)*.016])
-  const r=useRef(null);const iv=useInView(r,{once:true})
+  const r=useRef(null);const iv=useInView(r,{once:true,margin:'-10%'})
   const [mp,setMp]=useState({x:200,y:100})
   const cardRef=useRef<HTMLDivElement>(null)
   return (
     <div ref={slot} style={{height:'45vh',minHeight:'240px'}}>
       <motion.div ref={(el)=>{(r as any).current=el;(cardRef as any).current=el}}
         style={{scale,top:`${44+i*10}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
-        initial={{opacity:0}} animate={iv?{opacity:1}:{}} transition={{duration:.4}}
+        initial={{opacity:0,y:70,rotate:i%2===0?-1.2:1.2}}
+        animate={iv?{opacity:1,y:0,rotate:0}:{}}
+        transition={{duration:.7,delay:i*.08,ease:[.16,1,.3,1]}}
         className="sticky will-change-transform rounded-2xl overflow-hidden border border-yellow-200/60"
         onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setMp({x:e.clientX-rc.left,y:e.clientY-rc.top})}}>
         <div className="pointer-events-none absolute inset-0 z-0"
@@ -259,7 +267,7 @@ function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
             </div>
             {p.href
               ?<a href={p.href} target="_blank" rel="noreferrer" className="font-mono text-xs px-4 py-2 rounded-full border-2 transition-all hover:-translate-y-0.5 mt-0.5" style={{borderColor:p.accent,color:p.accent}}>GitHub ↗</a>
-              :<span className="font-mono text-xs px-4 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">Academic</span>
+              :<span className="font-mono text-xs px-4 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">{p.badge||'Academic'}</span>
             }
           </div>
           <p className="text-gray-600 text-sm leading-relaxed max-w-xl mb-4">{p.desc}</p>
@@ -312,27 +320,39 @@ const PHOTO_WORKS=[
   {src:'/images/IMG_1724.jpg',cap:'Quiet afternoon',tall:false},
 ]
 
+const TAPE_ON=[1,4,7,11] // indices that get a little washi-tape accent for scrapbook feel
+
 function PhotoCard({p,i}:{p:typeof PHOTO_WORKS[0],i:number}) {
   const [rot,setRot]=useState({x:0,y:0})
   const [hov,setHov]=useState(false)
   const cardRef=useRef<HTMLDivElement>(null)
-  const r=useRef(null);const iv=useInView(r,{once:true,margin:'-5%'})
+  const r=useRef(null);const iv=useInView(r,{once:true,margin:'-8%'})
+  const tiltBase=(i%2===0?-1.6:1.6)
+  const hasTape=TAPE_ON.includes(i%12)
   return (
     <motion.div ref={r}
-      initial={{opacity:0,y:12}} animate={iv?{opacity:1,y:0}:{}}
-      transition={{duration:.5,delay:(i%5)*.05}}
-      className={p.tall?'row-span-2':'row-span-1'}
+      initial={{opacity:0,y:36,scale:.92,rotate:tiltBase*2}}
+      animate={iv?{opacity:1,y:0,scale:1,rotate:tiltBase}:{}}
+      transition={{duration:.6,delay:(i%6)*.08,ease:[.16,1,.3,1]}}
+      whileHover={{scale:1.035,rotate:0,zIndex:20}}
+      className="break-inside-avoid mb-3 relative"
       style={{perspective:'900px'}}>
+      {hasTape && (
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-12 h-4 bg-yellow-200/70 border border-yellow-300/60 shadow-sm z-20 pointer-events-none"
+          style={{transform:'translateX(-50%) rotate(-3deg)'}}/>
+      )}
       <div ref={cardRef}
-        onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setRot({x:((e.clientY-rc.top)/rc.height-.5)*-10,y:((e.clientX-rc.left)/rc.width-.5)*10})}}
+        onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setRot({x:((e.clientY-rc.top)/rc.height-.5)*-8,y:((e.clientX-rc.left)/rc.width-.5)*8})}}
         onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{setHov(false);setRot({x:0,y:0})}}
-        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(1.03)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d',height:'100%'}}
-        className="rounded-xl overflow-hidden shadow-sm cursor-pointer relative h-full">
-        <img src={p.src} alt={p.cap} className="w-full h-full object-cover" loading="lazy"/>
-        <div className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,0.18) 0%,transparent 65%)`}}/>
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent flex items-end p-3 transition-opacity duration-200 ${hov?'opacity-100':'opacity-0'}`}>
-          <p className="text-white font-mono text-xs">{p.cap}</p>
+        style={{transform:hov?`rotateX(${rot.x}deg) rotateY(${rot.y}deg)`:'none',transition:hov?'transform .12s ease-out':'transform .45s ease',transformStyle:'preserve-3d'}}
+        className="rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer relative bg-white p-1.5">
+        <div className="relative overflow-hidden rounded-md">
+          <img src={p.src} alt={p.cap} className="w-full h-auto block transition-transform duration-500" style={{transform:hov?'scale(1.08)':'scale(1)'}} loading="lazy"/>
+          <div className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,0.22) 0%,transparent 65%)`}}/>
+          <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3 transition-opacity duration-200 ${hov?'opacity-100':'opacity-0'}`}>
+            <p className="text-white font-mono text-xs">{p.cap}</p>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -345,6 +365,10 @@ function Gallery() {
     <section id="gallery" className="py-16 px-6 md:px-10 relative overflow-hidden" style={{background:'#faf9f6'}}>
       <div className="absolute top-12 left-6 w-56 h-56 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute bottom-12 right-6 w-64 h-64 bg-green-100/35 rounded-full blur-3xl pointer-events-none"/>
+      {/* scattered decorative dots, echoes the hero's accent dots */}
+      <motion.span initial={{opacity:0}} animate={inView?{opacity:1}:{}} transition={{delay:.6,duration:.6}} className="hidden md:block absolute top-24 left-[38%] w-2 h-2 rounded-full bg-yellow-400 pointer-events-none"/>
+      <motion.span initial={{opacity:0}} animate={inView?{opacity:1}:{}} transition={{delay:.8,duration:.6}} className="hidden md:block absolute top-40 left-[42%] w-1 h-1 rounded-full bg-yellow-400/70 pointer-events-none"/>
+      <motion.span initial={{opacity:0}} animate={inView?{opacity:1}:{}} transition={{delay:1,duration:.6}} className="hidden md:block absolute bottom-24 right-[8%] w-1.5 h-1.5 rounded-full bg-orange-400/70 pointer-events-none"/>
       <div className="max-w-screen-xl mx-auto relative z-10">
         <motion.div ref={ref} initial={{opacity:0,y:20}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.6}} className="mb-8">
           <span className="text-yellow-500 font-mono text-xs tracking-widest uppercase">04 · Gallery</span>
@@ -355,8 +379,8 @@ function Gallery() {
             Chasing good light with my phone, finishing watercolors on weekends. No fancy gear — just noticing things. Hover for a little magic ✨
           </p>
         </motion.div>
-        {/* grid with fixed row height so images are cropped uniformly */}
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-2.5 auto-rows-[140px]">
+        {/* true masonry via CSS columns — natural aspect ratios, no cropping */}
+        <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-3">
           {PHOTO_WORKS.map((p,i)=><PhotoCard key={i} p={p} i={i}/>)}
         </div>
       </div>
