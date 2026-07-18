@@ -17,12 +17,12 @@ function playPant(){
 function ZhaoZhaoMascot(){
   const [show,setShow]=useState(false)
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] select-none" style={{width:'clamp(120px,15vw,190px)'}}>
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] select-none" style={{width:'clamp(72px,8vw,108px)'}}>
       <AnimatePresence>
         {show && (
           <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
             transition={{duration:.2}}
-            className="absolute -top-3 right-0 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 whitespace-nowrap">
+            className="absolute -top-4 right-0 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 whitespace-nowrap z-10">
             <p className="font-mono text-xs text-gray-700">hello im zhaozhao 🐾</p>
             <div className="absolute right-6 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
           </motion.div>
@@ -31,13 +31,13 @@ function ZhaoZhaoMascot(){
       <motion.img
         src="/images/zhaozhao.png"
         alt="zhaozhao"
-        animate={{y:[0,-8,0],rotate:[-3,3,-3]}}
-        transition={{duration:2.6,repeat:Infinity,ease:'easeInOut'}}
+        animate={{y:[0,-7,0],scale:[1,1.025,1]}}
+        transition={{duration:3.2,repeat:Infinity,ease:'easeInOut'}}
         whileHover={{scale:1.08}}
         onMouseEnter={()=>{setShow(true);playPant()}}
         onMouseLeave={()=>setShow(false)}
         onTouchStart={()=>{setShow(true);playPant();setTimeout(()=>setShow(false),1800)}}
-        className="w-full cursor-pointer"
+        className="w-full cursor-pointer relative z-0"
         style={{filter:'drop-shadow(0 10px 18px rgba(0,0,0,.25))'}}
       />
     </div>
