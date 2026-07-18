@@ -16,14 +16,32 @@ function playPant(){
 
 function ZhaoZhaoMascot(){
   const [show,setShow]=useState(false)
+  // 页面上第一次任意点击/按键/触摸时,静音"预热"一次播放,解锁浏览器的音频播放限制
+  // 这样鼠标真正碰到狗狗时就能立刻出声,不用非得先点它一下
+  useEffect(()=>{
+    const unlock=()=>{
+      if(pantAudio){
+        pantAudio.muted=true
+        pantAudio.play().then(()=>{
+          pantAudio.pause(); pantAudio.currentTime=0; pantAudio.muted=false
+        }).catch(()=>{})
+      }
+    }
+    window.addEventListener('pointerdown',unlock,{once:true})
+    window.addEventListener('keydown',unlock,{once:true})
+    return ()=>{
+      window.removeEventListener('pointerdown',unlock)
+      window.removeEventListener('keydown',unlock)
+    }
+  },[])
   return (
     <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] select-none" style={{width:'clamp(72px,8vw,108px)'}}>
       <AnimatePresence>
         {show && (
           <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
             transition={{duration:.2}}
-            className="absolute -top-4 right-0 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 whitespace-nowrap z-10">
-            <p className="font-mono text-xs text-gray-700">hello im zhaozhao 🐾</p>
+            className="absolute bottom-full right-0 mb-3 bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 z-10 max-w-[210px] text-center">
+            <p className="font-mono text-xs text-gray-700 leading-snug">hello im zhaozhao 🐾<br/>welcome to rune's site!</p>
             <div className="absolute right-6 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
           </motion.div>
         )}
@@ -59,7 +77,14 @@ function Cursor() {
       raf=requestAnimationFrame(anim); ctx.clearRect(0,0,W,H)
       if(++tick%2===0) pts.push({x:mx,y:my,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2-.5,r:2+Math.random()*3,life:1,decay:.03+Math.random()*.018,c:COLS[Math.floor(Math.random()*COLS.length)]})
       for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.life-=p.decay;if(p.life<=0){pts.splice(i,1);continue}ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fillStyle=p.c+(p.life*.8)+')';ctx.fill()}
-      ctx.beginPath();ctx.arc(mx,my,4,0,Math.PI*2);ctx.fillStyle='#EAB308';ctx.fill()
+      // cursor drawn as a little tennis ball — zhaozhao chases it
+      const R=7
+      const grad=ctx.createRadialGradient(mx-R*0.35,my-R*0.35,R*0.15,mx,my,R)
+      grad.addColorStop(0,'#F5F86B'); grad.addColorStop(1,'#C7D400')
+      ctx.beginPath(); ctx.arc(mx,my,R,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill()
+      ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.1
+      ctx.beginPath(); ctx.arc(mx-R*0.55,my,R*0.95,-0.9,0.9); ctx.stroke()
+      ctx.beginPath(); ctx.arc(mx+R*0.55,my,R*0.95,Math.PI-0.9,Math.PI+0.9); ctx.stroke()
     }
     anim()
     return ()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);document.removeEventListener('mousemove',onMove)}
