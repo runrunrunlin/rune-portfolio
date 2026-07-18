@@ -81,8 +81,8 @@ function Hero() {
 }
 
 // ── Marquee ──────────────────────────────────────────────
-const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_7849.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg']
-const ROW2=['/images/IMG_1544.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_6263.jpg','/images/IMG_4528.jpg']
+const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_1544.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg','/images/IMG_0866.jpg']
+const ROW2=['/images/IMG_7849.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_7392.jpg','/images/100_1205.jpg','/images/IMG_7237.jpg']
 
 function Marquee() {
   const r1=useRef<HTMLDivElement>(null),r2=useRef<HTMLDivElement>(null),sec=useRef<HTMLElement>(null)
@@ -123,7 +123,7 @@ function About() {
               <div className="absolute inset-0 rounded-full bg-yellow-300 translate-x-2 translate-y-2"/>
               <div className="relative rounded-full overflow-hidden border-3 border-white shadow-xl" style={{width:'88px',height:'88px'}}>
                 {/* 👇 改这里换头像图片 */}
-                <img src="/images/IMG_8186.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
+                <img src="/images/IMG_9964.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
               </div>
             </div>
           </div>
