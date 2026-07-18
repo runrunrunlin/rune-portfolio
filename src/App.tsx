@@ -1,5 +1,68 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+
+// ── ZhaoZhao mascot — floating corner buddy ───────────────
+// 👇 把抠好背景的狗狗图片存成 public/images/zhaozhao.png 即可自动显示
+// 想换成真实录音: 把 mp3 放进 public/(比如 public/pant.mp3), 然后把 playPant() 里的内容换成:
+//   const audio=new Audio('/pant.mp3'); audio.play()
+function playPant(){
+  try{
+    const AC=(window as any).AudioContext||(window as any).webkitAudioContext
+    const ctx=new AC()
+    const now=ctx.currentTime
+    for(let i=0;i<4;i++){
+      const dur=0.11
+      const bufferSize=Math.floor(ctx.sampleRate*dur)
+      const buffer=ctx.createBuffer(1,bufferSize,ctx.sampleRate)
+      const data=buffer.getChannelData(0)
+      for(let j=0;j<bufferSize;j++){
+        const env=Math.pow(1-j/bufferSize,1.6)
+        data[j]=(Math.random()*2-1)*env
+      }
+      const noise=ctx.createBufferSource(); noise.buffer=buffer
+      const filter=ctx.createBiquadFilter()
+      filter.type='bandpass'; filter.frequency.value=700+i*40; filter.Q.value=0.6
+      const gain=ctx.createGain()
+      const start=now+i*0.155
+      gain.gain.setValueAtTime(0.0001,start)
+      gain.gain.linearRampToValueAtTime(0.5,start+0.015)
+      gain.gain.exponentialRampToValueAtTime(0.001,start+dur)
+      noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination)
+      noise.start(start); noise.stop(start+dur+0.02)
+    }
+    setTimeout(()=>ctx.close(),900)
+  }catch(e){/* audio not supported, fail silently */}
+}
+
+function ZhaoZhaoMascot(){
+  const [show,setShow]=useState(false)
+  return (
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[60] select-none" style={{width:'clamp(72px,9vw,110px)'}}>
+      <AnimatePresence>
+        {show && (
+          <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
+            transition={{duration:.2}}
+            className="absolute -top-3 right-0 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 whitespace-nowrap">
+            <p className="font-mono text-xs text-gray-700">hello im zhaozhao 🐾</p>
+            <div className="absolute right-6 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.img
+        src="/images/zhaozhao.png"
+        alt="zhaozhao"
+        animate={{y:[0,-8,0],rotate:[-3,3,-3]}}
+        transition={{duration:2.6,repeat:Infinity,ease:'easeInOut'}}
+        whileHover={{scale:1.08}}
+        onMouseEnter={()=>{setShow(true);playPant()}}
+        onMouseLeave={()=>setShow(false)}
+        onTouchStart={()=>{setShow(true);playPant();setTimeout(()=>setShow(false),1800)}}
+        className="w-full cursor-pointer"
+        style={{filter:'drop-shadow(0 10px 18px rgba(0,0,0,.25))'}}
+      />
+    </div>
+  )
+}
 
 function Cursor() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -476,6 +539,7 @@ export default function App() {
     <>
       <Cursor/>
       <Navbar/>
+      <ZhaoZhaoMascot/>
       <main>
         <Hero/><Marquee/><About/><Experience/><Projects/><Gallery/><Contact/>
       </main>
