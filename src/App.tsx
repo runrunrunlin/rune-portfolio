@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 function Cursor() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -81,8 +81,8 @@ function Hero() {
 }
 
 // ── Marquee ──────────────────────────────────────────────
-const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_1544.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg','/images/IMG_0866.jpg']
-const ROW2=['/images/IMG_7849.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_7392.jpg','/images/100_1205.jpg','/images/IMG_7237.jpg']
+const ROW1=['/images/IMG_8972.jpg','/images/c7cbe8ad-d62d-431c-9590-dc2fc633a16e.jpg','/images/IMG_2042.jpg','/images/IMG_5909.jpg','/images/IMG_7849.jpg','/images/IMG_6259.jpg','/images/IMG_1735.jpg','/images/IMG_4100.jpg']
+const ROW2=['/images/IMG_1544.jpg','/images/IMG_8186.jpg','/images/IMG_6824.jpg','/images/IMG_7971.jpg','/images/IMG_2524.jpg','/images/beauty_1766618940180.jpg','/images/IMG_6263.jpg','/images/IMG_4528.jpg']
 
 function Marquee() {
   const r1=useRef<HTMLDivElement>(null),r2=useRef<HTMLDivElement>(null),sec=useRef<HTMLElement>(null)
@@ -123,7 +123,7 @@ function About() {
               <div className="absolute inset-0 rounded-full bg-yellow-300 translate-x-2 translate-y-2"/>
               <div className="relative rounded-full overflow-hidden border-3 border-white shadow-xl" style={{width:'88px',height:'88px'}}>
                 {/* 👇 改这里换头像图片 */}
-                <img src="/images/IMG_9964.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
+                <img src="/images/IMG_8186.jpg" alt="Rune" className="w-full h-full object-cover" style={{objectPosition:'center 15%'}}/>
               </div>
             </div>
           </div>
@@ -221,7 +221,7 @@ function Experience() {
   )
 }
 
-// ── Projects — sticky scroll stack ────────────────────────
+// ── Projects ───────────────────────────────────────────────
 const PROJS=[
   {n:'01',cat:'Full-Stack · ASP.NET Core',name:'Work Order Management System',href:'https://github.com/runrunrunlin/WorkOrderSystem',badge:'',
    desc:'Maintenance management web app with a four-stage work order lifecycle. Separate Admin and Technician access levels, bcrypt auth, automatic equipment status sync.',
@@ -241,42 +241,37 @@ const PROJS=[
 ]
 
 function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
-  const slot=useRef(null)
-  const {scrollYProgress}=useScroll({target:slot,offset:['start end','end start']})
-  const scale=useTransform(scrollYProgress,[.1,.5,.9],[.96,1,1-(2-i)*.016])
-  const r=useRef(null);const iv=useInView(r,{once:true,margin:'-10%'})
+  const r=useRef(null);const iv=useInView(r,{once:true,margin:'-15% 0px -15% 0px'})
   const [mp,setMp]=useState({x:200,y:100})
   const cardRef=useRef<HTMLDivElement>(null)
   return (
-    <div ref={slot} style={{height:'45vh',minHeight:'240px'}}>
-      <motion.div ref={(el)=>{(r as any).current=el;(cardRef as any).current=el}}
-        style={{scale,top:`${44+i*10}px`,background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
-        initial={{opacity:0,y:70,rotate:i%2===0?-1.2:1.2}}
-        animate={iv?{opacity:1,y:0,rotate:0}:{}}
-        transition={{duration:.7,delay:i*.08,ease:[.16,1,.3,1]}}
-        className="sticky will-change-transform rounded-2xl overflow-hidden border border-yellow-200/60"
-        onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setMp({x:e.clientX-rc.left,y:e.clientY-rc.top})}}>
-        <div className="pointer-events-none absolute inset-0 z-0"
-          style={{background:`radial-gradient(250px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.13),transparent 65%)`}}/>
-        <div className="relative z-10 p-6 md:p-8">
-          <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
-            <div className="font-black leading-none opacity-[0.08]" style={{fontSize:'clamp(2rem,5vw,4rem)',color:p.accent}}>{p.n}</div>
-            <div className="flex-1 px-4 pt-0.5">
-              <div className="text-xs font-mono tracking-widest uppercase mb-1" style={{color:p.accent}}>{p.cat}</div>
-              <div className="font-black text-lg md:text-xl leading-snug text-gray-900">{p.name}</div>
-            </div>
-            {p.href
-              ?<a href={p.href} target="_blank" rel="noreferrer" className="font-mono text-xs px-4 py-2 rounded-full border-2 transition-all hover:-translate-y-0.5 mt-0.5" style={{borderColor:p.accent,color:p.accent}}>GitHub ↗</a>
-              :<span className="font-mono text-xs px-4 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">{p.badge||'Academic'}</span>
-            }
+    <motion.div ref={(el)=>{(r as any).current=el;(cardRef as any).current=el}}
+      style={{background:'linear-gradient(135deg,#fffdf4 0%,#fff9e6 50%,#fef3c7 100%)'}}
+      initial={{opacity:0,y:70,rotate:i%2===0?-1.2:1.2}}
+      animate={iv?{opacity:1,y:0,rotate:0}:{}}
+      transition={{duration:.7,delay:i*.08,ease:[.16,1,.3,1]}}
+      className="relative rounded-2xl overflow-hidden border border-yellow-200/60"
+      onMouseMove={e=>{const rc=cardRef.current!.getBoundingClientRect();setMp({x:e.clientX-rc.left,y:e.clientY-rc.top})}}>
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(250px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.13),transparent 65%)`}}/>
+      <div className="relative z-10 p-6 md:p-8">
+        <div className="flex items-start justify-between mb-4 flex-wrap gap-2">
+          <div className="font-black leading-none opacity-[0.08]" style={{fontSize:'clamp(2rem,5vw,4rem)',color:p.accent}}>{p.n}</div>
+          <div className="flex-1 px-4 pt-0.5">
+            <div className="text-xs font-mono tracking-widest uppercase mb-1" style={{color:p.accent}}>{p.cat}</div>
+            <div className="font-black text-lg md:text-xl leading-snug text-gray-900">{p.name}</div>
           </div>
-          <p className="text-gray-600 text-sm leading-relaxed max-w-xl mb-4">{p.desc}</p>
-          <div className="flex flex-wrap gap-1.5">
-            {p.stack.map(s=><span key={s} className="text-xs font-mono px-3 py-1.5 rounded-full border-2 font-semibold" style={{borderColor:p.accent+'50',color:p.accent,background:p.accent+'12'}}>{s}</span>)}
-          </div>
+          {p.href
+            ?<a href={p.href} target="_blank" rel="noreferrer" className="font-mono text-xs px-4 py-2 rounded-full border-2 transition-all hover:-translate-y-0.5 mt-0.5" style={{borderColor:p.accent,color:p.accent}}>GitHub ↗</a>
+            :<span className="font-mono text-xs px-4 py-2 rounded-full border-2 border-gray-300 text-gray-400 mt-0.5">{p.badge||'Academic'}</span>
+          }
         </div>
-      </motion.div>
-    </div>
+        <p className="text-gray-600 text-sm leading-relaxed max-w-xl mb-4">{p.desc}</p>
+        <div className="flex flex-wrap gap-1.5">
+          {p.stack.map(s=><span key={s} className="text-xs font-mono px-3 py-1.5 rounded-full border-2 font-semibold" style={{borderColor:p.accent+'50',color:p.accent,background:p.accent+'12'}}>{s}</span>)}
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
@@ -293,7 +288,7 @@ function Projects() {
             "Wait, I could<br/><span className="text-yellow-400">build</span> this."
           </h2>
         </motion.div>
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-6">
           {PROJS.map((p,i)=><ProjectCard key={i} p={p} i={i}/>)}
         </div>
       </div>
