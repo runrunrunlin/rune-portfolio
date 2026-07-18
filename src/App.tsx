@@ -112,7 +112,7 @@ function Marquee() {
 // ── About ─────────────────────────────────────────────────
 function About() {
   const ref=useRef(null);const inView=useInView(ref,{once:true,margin:'-10%'})
-  const tags=['☕ chronically curious','🐕 dog-adjacent','📸 bad camera, good eye','🎨 paints sunsets','🏸 loses gracefully','🧩 puzzle hoarder']
+  const tags=['☕ chronically curious','🐕 dog-adjacent','📸 bad camera, good eye','🎨 paints sunsets','🏸 loses gracefully','🧩 puzzle hoarder','🚀 fast learner, faster adapter','💬 genuinely easy to work with']
   return (
     <section id="about" className="py-16 px-6 md:px-12 bg-[#faf9f6]">
       <div className="max-w-2xl mx-auto text-center">
@@ -132,6 +132,9 @@ function About() {
           </h2>
           <p className="text-gray-500 text-sm leading-relaxed mb-3 mx-auto">
             <strong className="text-gray-800">Run Lin</strong> — most call me <strong className="text-gray-800">Rune</strong>. CS grad from the University of Alberta. I find the same satisfaction in a clean pull request, a well-framed photograph, and a half-finished watercolor painting on my desk.
+          </p>
+          <p className="text-gray-500 text-sm leading-relaxed mb-3 mx-auto">
+            I pick up new stacks fast and actually enjoy the climb — give me an unfamiliar tool on Monday, I'll have opinions about it by Friday. I also just like people: I ask a lot of questions, explain my code to anyone who's curious, and would rather figure things out with a team than alone in a corner.
           </p>
           <p className="text-gray-500 text-sm leading-relaxed mb-7 mx-auto">
             Currently sharing my apartment with the world's most photogenic golden retriever. Not a flex — just true.
@@ -308,9 +311,9 @@ const PHOTO_WORKS=[
   {src:'/images/IMG_0551.jpg',cap:'Eaves & reflection',tall:false},
   {src:'/images/IMG_1218.jpg',cap:'Morning light',tall:false},
   {src:'/images/painting-sunset.jpg',cap:'Evening Catch — original painting 🎨',tall:true},
-  {src:'/images/IMG_9739.jpg',cap:'Sky through a doorway',tall:false},
+  {src:'/images/IMG_4528.jpg',cap:'Canoes on turquoise water',tall:false},
   {src:'/images/IMG_7978.jpg',cap:'Brake lights & orange sky',tall:false},
-  {src:'/images/IMG_1889.jpg',cap:'Golden hour road',tall:false},
+  {src:'/images/IMG_9917.jpg',cap:'Railway bridge through the leaves',tall:false},
   {src:'/images/IMG_7988.jpg',cap:'Window sunset',tall:false},
   {src:'/images/IMG_1724.jpg',cap:'Quiet afternoon',tall:false},
 ]
