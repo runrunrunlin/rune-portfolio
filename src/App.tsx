@@ -40,6 +40,48 @@ function Navbar() {
   )
 }
 
+function HeroPhoto() {
+  const [rot,setRot]=useState({x:0,y:0})
+  const [hov,setHov]=useState(false)
+  const cardRef=useRef<HTMLDivElement>(null)
+  return (
+    <motion.div
+      initial={{opacity:0,scale:.9,rotate:-3}}
+      animate={{opacity:1,scale:1,rotate:-2,y:[0,-10,0,10,0]}}
+      transition={{
+        opacity:{delay:.3,duration:.6},
+        scale:{delay:.3,type:'spring',stiffness:100},
+        rotate:{delay:.3,type:'spring',stiffness:100},
+        y:{delay:1.2,duration:6,repeat:Infinity,ease:'easeInOut'}
+      }}
+      className="relative flex justify-center shrink-0"
+      style={{perspective:'1200px'}}>
+      <div ref={cardRef}
+        onMouseMove={e=>{
+          const rc=cardRef.current!.getBoundingClientRect()
+          setRot({x:((e.clientY-rc.top)/rc.height-.5)*-16,y:((e.clientX-rc.left)/rc.width-.5)*16})
+        }}
+        onMouseEnter={()=>setHov(true)}
+        onMouseLeave={()=>{setHov(false);setRot({x:0,y:0})}}
+        className="relative cursor-pointer"
+        style={{
+          transform:`rotateX(${rot.x}deg) rotateY(${rot.y}deg) scale(${hov?1.06:1})`,
+          transition:hov?'transform .15s ease-out':'transform .6s ease',
+          transformStyle:'preserve-3d'
+        }}>
+        <div className="absolute inset-0 bg-yellow-300 rounded-[2rem] transition-all duration-300"
+          style={{transform:hov?'translate(20px,20px)':'translate(12px,12px)'}}/>
+        <div className="relative bg-white rounded-[2rem] overflow-hidden border-4 border-white transition-shadow duration-300"
+          style={{width:'clamp(180px,22vw,280px)',boxShadow:hov?'0 35px 70px -15px rgba(0,0,0,.4)':'0 20px 45px -15px rgba(0,0,0,.25)'}}>
+          <img src="/images/FullSizeRender.jpg" alt="Rune Lin" className="w-full object-cover transition-transform duration-500" style={{height:'clamp(220px,30vw,360px)',transform:hov?'scale(1.06)':'scale(1)'}}/>
+          <div className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style={{opacity:hov?1:0,background:`radial-gradient(circle at ${50+rot.y*2}% ${50-rot.x*2}%,rgba(255,255,255,.4) 0%,transparent 60%)`}}/>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 function Hero() {
   return (
     <section className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-gray-50 relative overflow-hidden flex items-center">
@@ -66,15 +108,7 @@ function Hero() {
             <a href="#experience" className="border-2 border-gray-200 hover:border-yellow-400 text-gray-700 font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5">View experience</a>
           </motion.div>
         </div>
-        <motion.div initial={{opacity:0,scale:.9,rotate:-3}} animate={{opacity:1,scale:1,rotate:-2}} transition={{delay:.3,type:'spring',stiffness:100}}
-          className="relative flex justify-center shrink-0">
-          <div className="relative">
-            <div className="absolute inset-0 bg-yellow-300 rounded-[2rem] translate-x-3 translate-y-3"/>
-            <div className="relative bg-white rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white" style={{width:'clamp(180px,22vw,280px)'}}>
-              <img src="/images/FullSizeRender.jpg" alt="Rune Lin" className="w-full object-cover" style={{height:'clamp(220px,30vw,360px)'}}/>
-            </div>
-          </div>
-        </motion.div>
+<HeroPhoto/>
       </div>
     </section>
   )
