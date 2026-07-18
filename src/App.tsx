@@ -5,6 +5,8 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 // 👇 把抠好背景的狗狗图片存成 public/images/zhaozhao.png 即可自动显示
 // 喘气声用的是真实录音 public/pant.mp3(已剪裁+降噪+音量标准化）
 const pantAudio=typeof Audio!=='undefined'?new Audio('/pant.mp3'):null
+// 鼠标是否正悬停在昭昭的"触发区"上 — Cursor 组件据此决定画普通点还是大球
+let zzHover=false
 function playPant(){
   if(!pantAudio) return
   try{
@@ -52,8 +54,8 @@ function ZhaoZhaoMascot(){
         animate={{y:[0,-7,0],scale:[1,1.025,1]}}
         transition={{duration:3.2,repeat:Infinity,ease:'easeInOut'}}
         whileHover={{scale:1.08}}
-        onMouseEnter={()=>{setShow(true);playPant()}}
-        onMouseLeave={()=>setShow(false)}
+        onMouseEnter={()=>{setShow(true);playPant();zzHover=true}}
+        onMouseLeave={()=>{setShow(false);zzHover=false}}
         onTouchStart={()=>{setShow(true);playPant();setTimeout(()=>setShow(false),1800)}}
         className="w-full cursor-pointer relative z-0"
         style={{filter:'drop-shadow(0 10px 18px rgba(0,0,0,.25))'}}
@@ -77,14 +79,19 @@ function Cursor() {
       raf=requestAnimationFrame(anim); ctx.clearRect(0,0,W,H)
       if(++tick%2===0) pts.push({x:mx,y:my,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2-.5,r:2+Math.random()*3,life:1,decay:.03+Math.random()*.018,c:COLS[Math.floor(Math.random()*COLS.length)]})
       for(let i=pts.length-1;i>=0;i--){const p=pts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.life-=p.decay;if(p.life<=0){pts.splice(i,1);continue}ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fillStyle=p.c+(p.life*.8)+')';ctx.fill()}
-      // cursor drawn as a little tennis ball — zhaozhao chases it
-      const R=7
-      const grad=ctx.createRadialGradient(mx-R*0.35,my-R*0.35,R*0.15,mx,my,R)
-      grad.addColorStop(0,'#F5F86B'); grad.addColorStop(1,'#C7D400')
-      ctx.beginPath(); ctx.arc(mx,my,R,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill()
-      ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.1
-      ctx.beginPath(); ctx.arc(mx-R*0.55,my,R*0.95,-0.9,0.9); ctx.stroke()
-      ctx.beginPath(); ctx.arc(mx+R*0.55,my,R*0.95,Math.PI-0.9,Math.PI+0.9); ctx.stroke()
+      if(zzHover){
+        // near zhaozhao's trigger zone — cursor becomes a ball sized to fit his mouth
+        const R=18
+        const grad=ctx.createRadialGradient(mx-R*0.35,my-R*0.35,R*0.15,mx,my,R)
+        grad.addColorStop(0,'#F5F86B'); grad.addColorStop(1,'#C7D400')
+        ctx.beginPath(); ctx.arc(mx,my,R,0,Math.PI*2); ctx.fillStyle=grad; ctx.fill()
+        ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1.6
+        ctx.beginPath(); ctx.arc(mx-R*0.55,my,R*0.95,-0.9,0.9); ctx.stroke()
+        ctx.beginPath(); ctx.arc(mx+R*0.55,my,R*0.95,Math.PI-0.9,Math.PI+0.9); ctx.stroke()
+      }else{
+        // default cursor — plain dot, unchanged from before
+        ctx.beginPath();ctx.arc(mx,my,4,0,Math.PI*2);ctx.fillStyle='#EAB308';ctx.fill()
+      }
     }
     anim()
     return ()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);document.removeEventListener('mousemove',onMove)}
