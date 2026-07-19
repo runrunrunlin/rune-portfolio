@@ -42,8 +42,8 @@ function ZhaoZhaoMascot(){
         {show && (
           <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
             transition={{duration:.2}}
-            className="absolute bottom-full right-0 mb-3 bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 z-10 max-w-[210px] text-center">
-            <p className="font-mono text-xs text-gray-700 leading-snug">hello im zhaozhao 🐾<br/>welcome to rune's site!</p>
+            className="absolute bottom-full right-0 mb-3 bg-white rounded-2xl px-5 py-3 shadow-xl border border-yellow-200 z-10 w-64 text-center">
+            <p className="font-mono text-xs text-gray-700 leading-snug whitespace-nowrap">hello im zhaozhao 🐾<br/>welcome to rune's site!</p>
             <div className="absolute right-6 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
           </motion.div>
         )}
@@ -131,6 +131,16 @@ function HeroPhoto() {
       }}
       className="relative flex justify-center shrink-0"
       style={{perspective:'1200px'}}>
+      <AnimatePresence>
+        {hov && (
+          <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
+            transition={{duration:.2}}
+            className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 z-20 whitespace-nowrap pointer-events-none">
+            <p className="font-mono text-xs text-gray-700">hi~ 👋</p>
+            <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div ref={cardRef}
         onMouseMove={e=>{
           const rc=cardRef.current!.getBoundingClientRect()
@@ -158,8 +168,14 @@ function HeroPhoto() {
 }
 
 function Hero() {
+  const [mp,setMp]=useState({x:0,y:0})
+  const secRef=useRef<HTMLElement>(null)
   return (
-    <section className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-gray-50 relative overflow-hidden flex items-center">
+    <section ref={secRef}
+      onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
+      className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-gray-50 relative overflow-hidden flex items-center">
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.10),transparent 45%)`}}/>
       <div className="absolute top-10 right-10 w-72 h-72 bg-yellow-200/40 rounded-full blur-3xl"/>
       <div className="absolute bottom-10 left-0 w-64 h-64 bg-yellow-100/60 rounded-full blur-3xl"/>
       <div className="absolute inset-0 opacity-[0.025]" style={{backgroundImage:'radial-gradient(circle,#000 1px,transparent 1px)',backgroundSize:'24px 24px'}}/>
@@ -183,7 +199,7 @@ function Hero() {
             <a href="#experience" className="border-2 border-gray-200 hover:border-yellow-400 text-gray-700 font-bold text-sm px-7 py-3 rounded-xl transition-all hover:-translate-y-0.5">View experience</a>
           </motion.div>
         </div>
-<HeroPhoto/>
+        <HeroPhoto/>
       </div>
     </section>
   )
@@ -222,9 +238,15 @@ function Marquee() {
 function About() {
   const ref=useRef(null);const inView=useInView(ref,{once:true,margin:'-10%'})
   const tags=['☕ chronically curious','🐕 dog-adjacent','📸 bad camera, good eye','🎨 paints sunsets','🏸 loses gracefully','🧩 puzzle hoarder','🚀 fast learner, faster adapter','💬 genuinely easy to work with']
+  const [mp,setMp]=useState({x:0,y:0})
+  const secRef=useRef<HTMLElement>(null)
   return (
-    <section id="about" className="py-16 px-6 md:px-12 bg-[#faf9f6]">
-      <div className="max-w-2xl mx-auto text-center">
+    <section id="about" ref={secRef}
+      onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
+      className="py-16 px-6 md:px-12 bg-[#faf9f6] relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.10),transparent 45%)`}}/>
+      <div className="max-w-2xl mx-auto text-center relative z-10">
         <motion.div ref={ref} initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:.7}}>
           <span className="text-yellow-500 font-mono text-xs tracking-widest uppercase">01 · About me</span>
           <div className="mt-5 mb-6 flex justify-center">
@@ -295,24 +317,24 @@ function Experience() {
         <div className="flex flex-col">
           {EXP.map((e,i)=>{
             const r=useRef(null);const iv=useInView(r,{once:true,margin:'-5%'})
-            const isHov=hov===i, isDim=hov!==null&&!isHov
+            const isHov=hov===i, isOtherDim=hov!==null&&!isHov
             return (
               <motion.div ref={r} key={i}
                 initial={{opacity:0,y:16}} animate={iv?{opacity:1,y:0}:{}} transition={{duration:.5,delay:i*.07}}
                 onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)}
-                className="group relative rounded-xl p-5 cursor-default transition-all duration-200"
-                style={{opacity:isDim?.3:1}}>
-                <div className={`absolute inset-0 rounded-xl border transition-all duration-200 ${isHov?'border-yellow-400/30 bg-white/[0.04]':'border-transparent'}`}/>
+                className="group relative rounded-xl p-5 cursor-default transition-all duration-300"
+                style={{opacity:isOtherDim?.4:1}}>
+                <div className={`absolute inset-0 rounded-xl border transition-all duration-300 ${isHov?'border-yellow-400/30 bg-white/[0.04]':'border-transparent'}`}/>
                 <div className="relative grid grid-cols-[130px_1fr] gap-5">
-                  <div className="text-xs font-mono mt-0.5 transition-colors duration-200" style={{color:isHov?'rgba(234,179,8,.8)':'#6B7280'}}>{e.period}</div>
+                  <div className="text-xs font-mono mt-0.5 transition-colors duration-300" style={{color:isHov?'#EAB308':(isOtherDim?'#6B7280':'#E5E7EB')}}>{e.period}</div>
                   <div>
-                    <div className={`font-bold text-base mb-0.5 transition-colors duration-200 ${isHov?'text-yellow-400':'text-white'}`}>{e.role}</div>
-                    <div className="text-gray-500 text-xs font-mono mb-2">{e.org}</div>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-3 max-w-lg">{e.desc}</p>
+                    <div className="font-bold text-base mb-0.5 transition-colors duration-300" style={{color:isHov?'#EAB308':(isOtherDim?'#9CA3AF':'#FFFFFF')}}>{e.role}</div>
+                    <div className="text-xs font-mono mb-2 transition-colors duration-300" style={{color:isOtherDim?'#6B7280':'#D1D5DB'}}>{e.org}</div>
+                    <p className="text-sm leading-relaxed mb-3 max-w-lg transition-colors duration-300" style={{color:isOtherDim?'#6B7280':'#E5E7EB'}}>{e.desc}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {e.tags.map(t=>(
-                        <span key={t} className="text-xs font-mono px-2.5 py-1 rounded-full transition-all duration-200"
-                          style={{background:isHov?'rgba(234,179,8,0.15)':'rgba(255,255,255,0.06)',color:isHov?'#EAB308':'#9CA3AF',border:isHov?'1px solid rgba(234,179,8,0.35)':'1px solid rgba(255,255,255,0.1)'}}>
+                        <span key={t} className="text-xs font-mono px-2.5 py-1 rounded-full transition-all duration-300"
+                          style={{background:isHov?'rgba(234,179,8,0.15)':(isOtherDim?'rgba(255,255,255,0.03)':'rgba(255,255,255,0.08)'),color:isHov?'#EAB308':(isOtherDim?'#6B7280':'#E5E7EB'),border:isHov?'1px solid rgba(234,179,8,0.35)':(isOtherDim?'1px solid rgba(255,255,255,0.06)':'1px solid rgba(255,255,255,0.15)')}}>
                           {t}
                         </span>
                       ))}
@@ -333,7 +355,7 @@ function Experience() {
   )
 }
 
-// ── Projects ───────────────────────────────────────────────
+// ── Projects — sticky scroll stack ────────────────────────
 const PROJS=[
   {n:'01',cat:'Full-Stack · ASP.NET Core',name:'Work Order Management System',href:'https://github.com/runrunrunlin/WorkOrderSystem',badge:'',
    desc:'Maintenance management web app with a four-stage work order lifecycle. Separate Admin and Technician access levels, bcrypt auth, automatic equipment status sync.',
@@ -389,8 +411,14 @@ function ProjectCard({p,i}:{p:typeof PROJS[0],i:number}) {
 
 function Projects() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
+  const [mp,setMp]=useState({x:0,y:0})
+  const secRef=useRef<HTMLElement>(null)
   return (
-    <section id="projects" className="py-14 px-6 md:px-12 relative overflow-hidden" style={{background:'#faf9f6'}}>
+    <section id="projects" ref={secRef}
+      onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
+      className="py-14 px-6 md:px-12 relative overflow-hidden" style={{background:'#faf9f6'}}>
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.10),transparent 45%)`}}/>
       <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-200/25 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-100/30 rounded-full blur-3xl pointer-events-none"/>
       <div className="max-w-3xl mx-auto relative z-10">
@@ -468,8 +496,14 @@ function PhotoCard({p,i}:{p:typeof PHOTO_WORKS[0],i:number}) {
 
 function Gallery() {
   const ref=useRef(null);const inView=useInView(ref,{once:true})
+  const [mp,setMp]=useState({x:0,y:0})
+  const secRef=useRef<HTMLElement>(null)
   return (
-    <section id="gallery" className="py-16 px-6 md:px-10 relative overflow-hidden" style={{background:'#faf9f6'}}>
+    <section id="gallery" ref={secRef}
+      onMouseMove={e=>{const r=secRef.current!.getBoundingClientRect();setMp({x:e.clientX-r.left,y:e.clientY-r.top})}}
+      className="py-16 px-6 md:px-10 relative overflow-hidden" style={{background:'#faf9f6'}}>
+      <div className="pointer-events-none absolute inset-0 z-0"
+        style={{background:`radial-gradient(500px circle at ${mp.x}px ${mp.y}px,rgba(234,179,8,0.10),transparent 45%)`}}/>
       <div className="absolute top-12 left-6 w-56 h-56 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"/>
       <div className="absolute bottom-12 right-6 w-64 h-64 bg-green-100/35 rounded-full blur-3xl pointer-events-none"/>
       {/* scattered decorative dots, echoes the hero's accent dots */}
