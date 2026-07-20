@@ -439,21 +439,21 @@ function Projects() {
 
 // ── Gallery — masonry grid, object-cover, wider ───────────
 const PHOTO_WORKS=[
-  {src:'/images/IMG_2776.jpg',cap:'Stilt house, Thailand',tall:true},
-  {src:'/images/IMG_0492.jpg',cap:'Sunset through trees',tall:false},
-  {src:'/images/IMG_9930.jpg',cap:'Pavilion on the lake',tall:false},
-  {src:'/images/IMG_9612.jpg',cap:'Spring canopy',tall:true},
-  {src:'/images/IMG_0338.jpg',cap:'Autumn, looking up',tall:false},
-  {src:'/images/IMG_7575.jpg',cap:'Lake Louise',tall:false},
-  {src:'/images/IMG_4922.jpg',cap:'Bridge & green hills',tall:true},
-  {src:'/images/IMG_0551.jpg',cap:'Eaves & reflection',tall:false},
-  {src:'/images/IMG_1218.jpg',cap:'Morning light',tall:false},
-  {src:'/images/painting-sunset.jpg',cap:'Evening Catch — original painting 🎨',tall:true},
-  {src:'/images/IMG_4528.jpg',cap:'Canoes on turquoise water',tall:false},
-  {src:'/images/IMG_7978.jpg',cap:'Brake lights & orange sky',tall:false},
-  {src:'/images/IMG_9917.jpg',cap:'Railway bridge through the leaves',tall:false},
-  {src:'/images/IMG_7988.jpg',cap:'Window sunset',tall:false},
-  {src:'/images/IMG_1724.jpg',cap:'Quiet afternoon',tall:false},
+  {src:'/images/IMG_2776.jpg',cap:'A house that commutes with the tide',tall:true},
+  {src:'/images/IMG_0492.jpg',cap:'The sky, doing its best work for free',tall:false},
+  {src:'/images/IMG_9930.jpg',cap:'Symmetry, borrowed from the water',tall:false},
+  {src:'/images/IMG_9612.jpg',cap:'Green, before it knew any better',tall:true},
+  {src:'/images/IMG_0338.jpg',cap:'Looking up while everyone else looked down',tall:false},
+  {src:'/images/IMG_7575.jpg',cap:'Water so blue it looks like a rendering error',tall:false},
+  {src:'/images/IMG_4922.jpg',cap:'A bridge that didn\'t need to try this hard',tall:true},
+  {src:'/images/IMG_0551.jpg',cap:'Old rooflines, new reflection',tall:false},
+  {src:'/images/IMG_1218.jpg',cap:'Light, arriving before the excuses do',tall:false},
+  {src:'/images/painting-sunset.jpg',cap:'Evening Catch — painted by hand, not a model 🎨',tall:true},
+  {src:'/images/IMG_4528.jpg',cap:'Canoes, waiting on better decisions',tall:false},
+  {src:'/images/IMG_7978.jpg',cap:'Traffic, dressed up by the sunset',tall:false},
+  {src:'/images/IMG_9917.jpg',cap:'A shortcut nobody takes on foot',tall:false},
+  {src:'/images/IMG_7988.jpg',cap:'The best view came free with the apartment',tall:false},
+  {src:'/images/IMG_1724.jpg',cap:'Quiet afternoon — caption written by the AI who helped build this site 🤖',tall:false},
 ]
 
 const TAPE_ON=[1,4,7,11] // indices that get a little washi-tape accent for scrapbook feel
