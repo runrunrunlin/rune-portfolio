@@ -600,6 +600,11 @@ function spawnBallRain(){
 
 function EasterEggs(){
   useEffect(()=>{
+    // 打开控制台的人有小福利
+    console.log('%c🐾 hey, curious dev.','font-size:18px;font-weight:900;color:#EAB308;')
+    console.log('%cthis site was built by Rune — with an AI collaborator who couldn\'t resist leaving a few things behind. good luck finding all of them.','font-size:12px;color:#888;line-height:1.6;')
+  },[])
+  useEffect(()=>{
     // 切走标签页时标题小彩蛋 — 走了标题喊你回来,回来就恢复原样
     const original=document.title
     const onVis=()=>{document.title=document.hidden?"come back? 🐾":original}
