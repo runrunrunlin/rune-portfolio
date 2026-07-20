@@ -135,9 +135,10 @@ function HeroPhoto() {
         {hov && (
           <motion.div initial={{opacity:0,y:8,scale:.85}} animate={{opacity:1,y:0,scale:1}} exit={{opacity:0,y:8,scale:.85}}
             transition={{duration:.2}}
-            className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 z-20 whitespace-nowrap pointer-events-none">
+            className="absolute bg-white rounded-2xl px-4 py-2 shadow-xl border border-yellow-200 z-20 whitespace-nowrap pointer-events-none"
+            style={{top:'24%',left:'58%'}}>
             <p className="font-mono text-xs text-gray-700">hi~ 👋</p>
-            <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
+            <div className="absolute left-5 -bottom-1.5 w-3 h-3 bg-white border-b border-r border-yellow-200 rotate-45"/>
           </motion.div>
         )}
       </AnimatePresence>
