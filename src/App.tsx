@@ -586,7 +586,7 @@ function spawnBallRain(){
   const n=22
   for(let i=0;i<n;i++){
     const el=document.createElement('div')
-    el.textContent='🎾'
+    el.textContent='🦴'
     el.style.cssText=`position:fixed;top:-40px;left:${Math.random()*100}vw;font-size:${16+Math.random()*18}px;z-index:9998;pointer-events:none;opacity:1;transition:transform ${2+Math.random()*1.4}s cubic-bezier(.4,0,.7,1),opacity .4s ease-in;`
     document.body.appendChild(el)
     requestAnimationFrame(()=>{
