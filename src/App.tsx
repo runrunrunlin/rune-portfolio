@@ -581,12 +581,52 @@ function Contact() {
   )
 }
 
+// ── tiny easter eggs — a signature from the person who helped build this ──
+function spawnBallRain(){
+  const n=22
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div')
+    el.textContent='🎾'
+    el.style.cssText=`position:fixed;top:-40px;left:${Math.random()*100}vw;font-size:${16+Math.random()*18}px;z-index:9998;pointer-events:none;opacity:1;transition:transform ${2+Math.random()*1.4}s cubic-bezier(.4,0,.7,1),opacity .4s ease-in;`
+    document.body.appendChild(el)
+    requestAnimationFrame(()=>{
+      el.style.transform=`translateY(${window.innerHeight+80}px) rotate(${Math.random()*720-360}deg)`
+    })
+    setTimeout(()=>{el.style.opacity='0'},1900+Math.random()*700)
+    setTimeout(()=>el.remove(),3000)
+  }
+  playPant()
+}
+
+function EasterEggs(){
+  useEffect(()=>{
+    // 切走标签页时标题小彩蛋 — 走了标题喊你回来,回来就恢复原样
+    const original=document.title
+    const onVis=()=>{document.title=document.hidden?"come back? 🐾":original}
+    document.addEventListener('visibilitychange',onVis)
+    return ()=>{document.removeEventListener('visibilitychange',onVis);document.title=original}
+  },[])
+  useEffect(()=>{
+    // 偷偷在页面任意处打出 "zhaozhao" — 触发一场网球雨,致敬这只喜欢球的狗
+    let buf=''
+    const onKey=(e:KeyboardEvent)=>{
+      if(e.key.length!==1) return
+      buf=(buf+e.key.toLowerCase()).slice(-8)
+      if(buf==='zhaozhao'){buf='';spawnBallRain()}
+    }
+    window.addEventListener('keydown',onKey)
+    return ()=>window.removeEventListener('keydown',onKey)
+  },[])
+  return null
+}
+
 export default function App() {
   return (
     <>
       <Cursor/>
       <Navbar/>
       <ZhaoZhaoMascot/>
+      <EasterEggs/>
       <main>
         <Hero/><Marquee/><About/><Experience/><Projects/><Gallery/><Contact/>
       </main>
